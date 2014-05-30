@@ -9,6 +9,7 @@ license:             GPL-3
 license-file:        LICENSE
 author:              Justus Sagemüller
 maintainer:          sagemuej@smail.uni-koeln.de
+homepage:            https://github.com/leftaroundabout/trivial-constraint
 -- copyright:           
 category:            Constraints
 build-type:          Simple
