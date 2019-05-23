@@ -3,10 +3,11 @@
 -- Copyright   :  (c) 2014-2016 Justus Sagemüller
 -- License     :  GPL v3 (see LICENSE)
 -- Maintainer  :  (@) jsagemue $ uni-koeln.de
--- 
+--
+{-# LANGUAGE ConstraintKinds       #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE ConstraintKinds       #-}
+{-# LANGUAGE PolyKinds             #-}
 
 module Data.Constraint.Trivial (
             Unconstrained, Impossible
@@ -21,8 +22,8 @@ module Data.Constraint.Trivial (
           ) where
 
 -- | Intended to be used as an argument for some type constructor which expects kind
---   @* -> Constraint@, when you do not actually wish to constrain anything with it.
---   
+--   @k -> Constraint@, when you do not actually wish to constrain anything with it.
+--
 --   @'Unconstrained' t@ can always be added to the constraint list of any signature, without
 --   changing anything.
 class Unconstrained t
@@ -37,7 +38,7 @@ type Impossible t = HiddenEmptyClass t
 class HiddenEmptyClass t
 
 
--- | Like 'Unconstrained', but with kind signature @* -> * -> Constraint@
+-- | Like 'Unconstrained', but with kind signature @k -> k -> Constraint@
 --   (two unconstrained types).
 class Unconstrained2 t s
 instance Unconstrained2 t s
