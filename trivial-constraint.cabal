@@ -19,13 +19,17 @@ description:         Since GHC 7.4, constraints are first-class: we have the con
 license:             GPL-3
 license-file:        LICENSE
 author:              Justus Sagemüller
-maintainer:          sagemuej@smail.uni-koeln.de
+maintainer:          jsag@hvl.no
 homepage:            https://github.com/leftaroundabout/trivial-constraint
 -- copyright:           
 category:            Constraints
 build-type:          Simple
 -- extra-source-files:  
 cabal-version:       >=1.10
+
+source-repository head
+  type: git
+  location: git://github.com/leftaroundabout/trivial-constraint.git
 
 library
   exposed-modules:     Data.Constraint.Trivial
