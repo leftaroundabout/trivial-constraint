@@ -9,6 +9,8 @@
 {-# LANGUAGE FlexibleInstances       #-}
 {-# LANGUAGE FlexibleContexts        #-}
 {-# LANGUAGE MultiParamTypeClasses   #-}
+{-# LANGUAGE Rank2Types              #-}
+{-# LANGUAGE EmptyCase               #-}
 {-# LANGUAGE PolyKinds               #-}
 {-# LANGUAGE TypeOperators           #-}
 {-# LANGUAGE UndecidableInstances    #-}
@@ -25,16 +27,21 @@ module Data.Constraint.Trivial (
           , Unconstrained7, Impossible7
           , Unconstrained8, Impossible8
           , Unconstrained9, Impossible9
-          , Disallowed(..)
+          , Disallowed, nope
           ) where
 
 import           GHC.TypeLits
 import           GHC.Exts (Any, TYPE)
 
-class (Any, TypeError ('Text "All instances of "
+class Any => Bottom where
+  no :: a
+class (Bottom, TypeError ('Text "All instances of "
           ':<>: 'Text t
           ':<>: 'Text " are disallowed.")) => Disallowed t where
-  nope :: forall (a :: TYPE rep) => a
+
+nope :: forall (a :: TYPE rep). Bottom => a
+nope = case no of
+
 
 -- | Intended to be used as an argument for some type constructor which expects kind
 --   @k -> Constraint@, when you do not actually wish to constrain anything with it.
