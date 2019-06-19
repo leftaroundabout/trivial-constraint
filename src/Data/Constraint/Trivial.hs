@@ -18,7 +18,8 @@
 {-# LANGUAGE AllowAmbiguousTypes     #-}
 
 module Data.Constraint.Trivial (
-            Unconstrained, Impossible
+            Unconstrained0, Impossible0
+          , Unconstrained, Impossible
           , Unconstrained2, Impossible2
           , Unconstrained3, Impossible3
           , Unconstrained4, Impossible4
@@ -41,6 +42,11 @@ class (Bottom, TypeError ('Text "All instances of "
 
 nope :: forall (a :: TYPE rep). Bottom => a
 nope = case no of
+
+class Unconstrained0
+instance Unconstrained0
+
+class Disallowed "Impossible0" => Impossible0
 
 
 -- | Intended to be used as an argument for some type constructor which expects kind
