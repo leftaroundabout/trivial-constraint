@@ -38,7 +38,7 @@ class Any => Bottom where
   no :: a
 class (Bottom, TypeError ('Text "All instances of "
           ':<>: 'Text t
-          ':<>: 'Text " are disallowed.")) => Disallowed t where
+          ':<>: 'Text " are disallowed.")) => Disallowed t
 
 nope :: forall (a :: TYPE rep). Bottom => a
 nope = case no of
