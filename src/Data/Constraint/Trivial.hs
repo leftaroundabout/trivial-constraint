@@ -29,12 +29,12 @@ module Data.Constraint.Trivial (
           ) where
 
 import           GHC.TypeLits
-import           GHC.Exts (Any)
+import           GHC.Exts (Any, TYPE)
 
 class (Any, TypeError ('Text "All instances of "
           ':<>: 'Text t
           ':<>: 'Text " are disallowed.")) => Disallowed t where
-  nope :: a
+  nope :: forall (a :: TYPE rep) => a
 
 -- | Intended to be used as an argument for some type constructor which expects kind
 --   @k -> Constraint@, when you do not actually wish to constrain anything with it.
