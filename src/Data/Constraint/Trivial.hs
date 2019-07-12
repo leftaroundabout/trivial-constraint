@@ -18,6 +18,7 @@
 {-# LANGUAGE AllowAmbiguousTypes     #-}
 
 module Data.Constraint.Trivial (
+          -- * Trivial classes
             Unconstrained0, Impossible0
           , Unconstrained, Impossible
           , Unconstrained2, Impossible2
@@ -28,6 +29,7 @@ module Data.Constraint.Trivial (
           , Unconstrained7, Impossible7
           , Unconstrained8, Impossible8
           , Unconstrained9, Impossible9
+          -- * Utility
           , Disallowed, nope
           ) where
 
@@ -40,27 +42,78 @@ class (Bottom, TypeError ('Text "All instances of "
           ':<>: 'Text t
           ':<>: 'Text " are disallowed.")) => Disallowed t
 
+-- | A term-level witness that the context contains a 'Disallowed' constraint, i.e.
+--   one of the 'Impossible0', 'Impossible' ... constraints. In such a context, because
+--   you are guaranteed that it can under no circumstances actually be invoked, you
+--   are allowed to to anything whatsoever, even create a value of an uninhabited unlifted
+--   type.
 nope :: forall (a :: TYPE rep). Bottom => a
 nope = case no of
 
+-- | A constraint that is always/unconditionally fulfilled. This behaves the same
+--   way as @()@, when appearing in a constraint-tuple, i.e. it does not change anything
+--   about the constraints. It is thus the identity of the @(,)@ monoid in the constraint
+--   kind.
 class Unconstrained0
 instance Unconstrained0
 
+-- | A constraint that never is fulfilled, in other words it is guaranteed that something
+--   whose context contains this constraint will never actually be invoked in a program.
 class Disallowed "Impossible0" => Impossible0
 
 
--- | Intended to be used as an argument for some type constructor which expects kind
---   @k -> Constraint@, when you do not actually wish to constrain anything with it.
+-- | A parametric non-constraint. This can be used, for instance, when you have an
+--   existential that contains endo-functions of any type of some specified constraint.
 --
---   @'Unconstrained' t@ can always be added to the constraint list of any signature, without
---   changing anything.
+-- @
+-- data GenEndo c where
+--   GenEndo :: c a => (a -> a) -> GenEndo c
+-- @
+-- 
+--   Then, you can have values like @GenEndo abs :: GenEndo Num@. It is also possible
+--   to have @GenEndo id :: GenEndo Num@, but here the num constraint is not actually
+--   required. So what to use as the @c@ argument? It should be a constraint on a type
+--   which does not actually constrain the type.
+-- 
+-- @
+-- idEndo :: GenEndo Unconstrained
+-- idEndo = GenEndo id
+-- @
 class Unconstrained t
 instance Unconstrained t
 
 
--- | This constraint can /never/ be fulfilled. Might be useful e.g. as a default
---   for a class-associated constraint; this basically disables any method with
---   that constraint (so it can safely be left 'undefined').
+-- | This constraint can /never/ be fulfilled. One application in which this can be
+--   useful is as a default for a class-associated constraint; this basically disables
+--   any method with that constraint: so it can safely be left 'undefined'. We provide
+--   the 'nope' method as a special form of 'undefined', which actually guarantees it
+--   is safe through the type system. For instance, the old monad class with
+--   its controversial 'fail' method could be changed to
+--
+-- @
+-- class Applicative m => Monad m where
+--   (return,(>>=)) :: ...
+--   type FailableResult m :: * -> Constraint
+--   type FailableResult m = Impossible  -- fail disabled by default
+--   fail :: FailableResult m a => String -> m a
+--   fail = nope
+-- @
+-- 
+--   This would turn any use of fail in a “pure” monad (which does not actually
+--   define 'fail') into a type error.
+--   Meanwhile, “safe” uses of fail, such as in the IO monad, could be kept as-is,
+--   by making the instance
+--
+-- @
+-- instance Monad IO where
+--   (return,(>>=)) = ...
+--   type FailableResult m = Unconstrained
+--   fail = throwErrow
+-- @
+-- 
+--   Other instances could support the 'fail' method only selectively for particular
+--   result types, again by picking a suitable @FailableResult@ constraint
+--   (e.g. 'Monoid').
 class Disallowed "Impossible" => Impossible t
 
 
