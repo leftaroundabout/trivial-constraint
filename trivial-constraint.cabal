@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                trivial-constraint
-version:             0.5.1.0
+version:             0.6.0.0
 synopsis:            Constraints that any type, resp. no type fulfills
 description:         Since GHC 7.4, constraints are first-class: we have the constraint 
                      kind, and thus type-classes have a kind of form @k -> Constraint@,
