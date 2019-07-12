@@ -2,7 +2,7 @@
 -- Module      :  Data.Constraint.Trivial
 -- Copyright   :  (c) 2014-2016 Justus Sagemüller
 -- License     :  GPL v3 (see LICENSE)
--- Maintainer  :  (@) jsagemue $ uni-koeln.de
+-- Maintainer  :  (@) jsag $ hvl.no
 --
 {-# LANGUAGE ConstraintKinds         #-}
 {-# LANGUAGE DataKinds               #-}
