@@ -12,6 +12,7 @@
 {-# LANGUAGE Rank2Types              #-}
 {-# LANGUAGE EmptyCase               #-}
 {-# LANGUAGE PolyKinds               #-}
+{-# LANGUAGE TypeInType              #-}
 {-# LANGUAGE TypeOperators           #-}
 {-# LANGUAGE UndecidableInstances    #-}
 {-# LANGUAGE UndecidableSuperClasses #-}
