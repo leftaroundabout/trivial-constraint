@@ -12,6 +12,7 @@
 {-# LANGUAGE Rank2Types              #-}
 {-# LANGUAGE EmptyCase               #-}
 {-# LANGUAGE PolyKinds               #-}
+{-# LANGUAGE TypeInType              #-}
 {-# LANGUAGE TypeOperators           #-}
 {-# LANGUAGE UndecidableInstances    #-}
 {-# LANGUAGE UndecidableSuperClasses #-}
@@ -47,7 +48,7 @@ class (Bottom, TypeError ('Text "All instances of "
 --   you are guaranteed that it can under no circumstances actually be invoked, you
 --   are allowed to to anything whatsoever, even create a value of an uninhabited unlifted
 --   type.
-nope :: forall (a :: TYPE rep). Bottom => a
+nope :: forall rep (a :: TYPE rep). Bottom => a
 nope = case no of
 
 -- | A constraint that is always/unconditionally fulfilled. This behaves the same
